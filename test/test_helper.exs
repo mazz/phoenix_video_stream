@@ -1,6 +1,2 @@
-ExUnit.start
-
-Mix.Task.run "ecto.create", ~w(-r PhoenixVideoStream.Repo --quiet)
-Mix.Task.run "ecto.migrate", ~w(-r PhoenixVideoStream.Repo --quiet)
-Ecto.Adapters.SQL.begin_test_transaction(PhoenixVideoStream.Repo)
-
+ExUnit.start()
+Ecto.Adapters.SQL.Sandbox.mode(PhoenixVideoStream.Repo, :manual)

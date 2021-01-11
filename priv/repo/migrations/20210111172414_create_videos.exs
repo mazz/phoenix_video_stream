@@ -1,4 +1,4 @@
-defmodule PhoenixVideoStream.Repo.Migrations.CreateVideo do
+defmodule PhoenixVideoStream.Repo.Migrations.CreateVideos do
   use Ecto.Migration
 
   def change do
@@ -8,7 +8,7 @@ defmodule PhoenixVideoStream.Repo.Migrations.CreateVideo do
       add :content_type, :string
       add :path, :string
 
-      timestamps
+      timestamps()
     end
 
   end

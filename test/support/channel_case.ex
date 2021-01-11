@@ -1,16 +1,18 @@
-defmodule PhoenixVideoStream.ChannelCase do
+defmodule PhoenixVideoStreamWeb.ChannelCase do
   @moduledoc """
   This module defines the test case to be used by
   channel tests.
 
   Such tests rely on `Phoenix.ChannelTest` and also
-  imports other functionality to make it easier
-  to build and query models.
+  import other functionality to make it easier
+  to build common data structures and query the data layer.
 
   Finally, if the test case interacts with the database,
-  it cannot be async. For this reason, every test runs
-  inside a transaction which is reset at the beginning
-  of the test unless the test case is marked as async.
+  we enable the SQL sandbox, so changes done to the database
+  are reverted at the end of every test. If you are using
+  PostgreSQL, you can even run database tests asynchronously
+  by setting `use PhoenixVideoStreamWeb.ChannelCase, async: true`, although
+  this option is not recommended for other databases.
   """
 
   use ExUnit.CaseTemplate
@@ -18,22 +20,19 @@ defmodule PhoenixVideoStream.ChannelCase do
   using do
     quote do
       # Import conveniences for testing with channels
-      use Phoenix.ChannelTest
-
-      alias PhoenixVideoStream.Repo
-      import Ecto
-      import Ecto.Changeset
-      import Ecto.Query, only: [from: 1, from: 2]
-
+      import Phoenix.ChannelTest
+      import PhoenixVideoStreamWeb.ChannelCase
 
       # The default endpoint for testing
-      @endpoint PhoenixVideoStream.Endpoint
+      @endpoint PhoenixVideoStreamWeb.Endpoint
     end
   end
 
   setup tags do
+    :ok = Ecto.Adapters.SQL.Sandbox.checkout(PhoenixVideoStream.Repo)
+
     unless tags[:async] do
-      Ecto.Adapters.SQL.restart_test_transaction(PhoenixVideoStream.Repo, [])
+      Ecto.Adapters.SQL.Sandbox.mode(PhoenixVideoStream.Repo, {:shared, self()})
     end
 
     :ok

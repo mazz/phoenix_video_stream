@@ -1,16 +1,18 @@
-defmodule PhoenixVideoStream.ConnCase do
+defmodule PhoenixVideoStreamWeb.ConnCase do
   @moduledoc """
   This module defines the test case to be used by
   tests that require setting up a connection.
 
   Such tests rely on `Phoenix.ConnTest` and also
-  imports other functionality to make it easier
-  to build and query models.
+  import other functionality to make it easier
+  to build common data structures and query the data layer.
 
   Finally, if the test case interacts with the database,
-  it cannot be async. For this reason, every test runs
-  inside a transaction which is reset at the beginning
-  of the test unless the test case is marked as async.
+  we enable the SQL sandbox, so changes done to the database
+  are reverted at the end of every test. If you are using
+  PostgreSQL, you can even run database tests asynchronously
+  by setting `use PhoenixVideoStreamWeb.ConnCase, async: true`, although
+  this option is not recommended for other databases.
   """
 
   use ExUnit.CaseTemplate
@@ -18,25 +20,24 @@ defmodule PhoenixVideoStream.ConnCase do
   using do
     quote do
       # Import conveniences for testing with connections
-      use Phoenix.ConnTest
+      import Plug.Conn
+      import Phoenix.ConnTest
+      import PhoenixVideoStreamWeb.ConnCase
 
-      alias PhoenixVideoStream.Repo
-      import Ecto
-      import Ecto.Changeset
-      import Ecto.Query, only: [from: 1, from: 2]
-
-      import PhoenixVideoStream.Router.Helpers
+      alias PhoenixVideoStreamWeb.Router.Helpers, as: Routes
 
       # The default endpoint for testing
-      @endpoint PhoenixVideoStream.Endpoint
+      @endpoint PhoenixVideoStreamWeb.Endpoint
     end
   end
 
   setup tags do
+    :ok = Ecto.Adapters.SQL.Sandbox.checkout(PhoenixVideoStream.Repo)
+
     unless tags[:async] do
-      Ecto.Adapters.SQL.restart_test_transaction(PhoenixVideoStream.Repo, [])
+      Ecto.Adapters.SQL.Sandbox.mode(PhoenixVideoStream.Repo, {:shared, self()})
     end
 
-    {:ok, conn: Phoenix.ConnTest.conn()}
+    {:ok, conn: Phoenix.ConnTest.build_conn()}
   end
 end

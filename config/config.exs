@@ -3,27 +3,29 @@
 #
 # This configuration file is loaded before any dependency and
 # is restricted to this project.
+
+# General application configuration
 use Mix.Config
 
+config :phoenix_video_stream,
+  ecto_repos: [PhoenixVideoStream.Repo]
+
 # Configures the endpoint
-config :phoenix_video_stream, PhoenixVideoStream.Endpoint,
+config :phoenix_video_stream, PhoenixVideoStreamWeb.Endpoint,
   url: [host: "localhost"],
-  root: Path.dirname(__DIR__),
-  secret_key_base: "AhRn6St94F7sUUKKt9onT/mEFOBVg8ExqJ8xQAg4l/uH3wGTXwMfAkdEwtCuiSIE",
-  render_errors: [accepts: ~w(html json)],
-  pubsub: [name: PhoenixVideoStream.PubSub,
-           adapter: Phoenix.PubSub.PG2]
+  secret_key_base: "lzxMevhVGYC5ZZEvgeTRVx/iATdiS3rhMkTD6akLgYUcUx83lDww97z9HKryiYTv",
+  render_errors: [view: PhoenixVideoStreamWeb.ErrorView, accepts: ~w(html json), layout: false],
+  pubsub_server: PhoenixVideoStream.PubSub,
+  live_view: [signing_salt: "yVWQOb2/"]
 
 # Configures Elixir's Logger
 config :logger, :console,
   format: "$time $metadata[$level] $message\n",
   metadata: [:request_id]
 
+# Use Jason for JSON parsing in Phoenix
+config :phoenix, :json_library, Jason
+
 # Import environment specific config. This must remain at the bottom
 # of this file so it overrides the configuration defined above.
-import_config "#{Mix.env}.exs"
-
-# Configure phoenix generators
-config :phoenix, :generators,
-  migration: true,
-  binary_id: false
+import_config "#{Mix.env()}.exs"
