@@ -2,7 +2,7 @@ defmodule PhoenixVideoStreamWeb.WatchController do
   use PhoenixVideoStreamWeb, :controller
   import PhoenixVideoStream.Util
 
-  alias PhoenixVideoStream.Media.Video
+  alias PhoenixVideoStream.Multimedia.Video
   alias PhoenixVideoStream.Repo
 
   def show(%{req_headers: headers} = conn, %{"id" => id}) do

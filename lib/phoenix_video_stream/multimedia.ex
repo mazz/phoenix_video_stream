@@ -1,4 +1,4 @@
-defmodule PhoenixVideoStream.Media do
+defmodule PhoenixVideoStream.Multimedia do
   @moduledoc """
   The Media context.
   """
@@ -6,7 +6,7 @@ defmodule PhoenixVideoStream.Media do
   import Ecto.Query, warn: false
   alias PhoenixVideoStream.Repo
 
-  alias PhoenixVideoStream.Media.Video
+  alias PhoenixVideoStream.Multimedia.Video
 
   @doc """
   Returns the list of videos.

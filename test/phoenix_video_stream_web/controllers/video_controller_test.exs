@@ -1,14 +1,14 @@
 defmodule PhoenixVideoStreamWeb.VideoControllerTest do
   use PhoenixVideoStreamWeb.ConnCase
 
-  alias PhoenixVideoStream.Media
+  alias PhoenixVideoStream.Multimedia
 
   @create_attrs %{content_type: "some content_type", filename: "some filename", path: "some path", title: "some title"}
   @update_attrs %{content_type: "some updated content_type", filename: "some updated filename", path: "some updated path", title: "some updated title"}
   @invalid_attrs %{content_type: nil, filename: nil, path: nil, title: nil}
 
   def fixture(:video) do
-    {:ok, video} = Media.create_video(@create_attrs)
+    {:ok, video} = Multimedia.create_video(@create_attrs)
     video
   end
 

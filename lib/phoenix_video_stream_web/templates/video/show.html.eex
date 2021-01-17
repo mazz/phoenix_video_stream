@@ -5,12 +5,30 @@
     <%= @video.title %>
   </li>
 </ul>
-<video id="my-video" class="video-js" controls preload="none" width="640" height="264" data-setup="{}">
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/videojs-seek-buttons/dist/videojs-seek-buttons.css">
+<script src="https://cdn.jsdelivr.net/npm/videojs-seek-buttons/dist/videojs-seek-buttons.min.js"></script>
+
+<video id="my_video" class="video-js" controls preload="none" width="640" height="264" data-setup='{ "playbackRates": [0.5, 0.75, 1, 1.25, 1.5, 1.75, 2] }'>
   <source src="<%= Routes.watch_path(@conn, :show, @video) %>" type='<%= @video.content_type %>'>
   <p class="vjs-no-js">
     To view this video please enable JavaScript, and consider upgrading to a web browser that
     <a href="http://videojs.com/html5-video-support/" target="_blank">supports HTML5 video</a>
   </p>
 </video>
+
+<script>
+console.log("videojs.getPlayer()")
+console.log(window.videojs.getPlayer())
+console.log("window.videojs.players")
+console.log(window.videojs.players)
+my_video = window.videojs.players.my_video
+console.log("my_video")
+console.log(my_video)
+
+
+  player.seekButtons({
+    forward: 15,
+    back: 15});
+</script>
 
 <span><%= link "Back", to: Routes.video_path(@conn, :index) %></span>

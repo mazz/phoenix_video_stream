@@ -1,19 +1,19 @@
 defmodule PhoenixVideoStreamWeb.VideoController do
   use PhoenixVideoStreamWeb, :controller
 
-  alias PhoenixVideoStream.Media
-  alias PhoenixVideoStream.Media.Video
+  alias PhoenixVideoStream.Multimedia
+  alias PhoenixVideoStream.Multimedia.Video
   alias PhoenixVideoStream.Repo
 
   import PhoenixVideoStream.Util, only: [build_video_path: 1]
 
   def index(conn, _params) do
-    videos = Media.list_videos()
+    videos = Multimedia.list_videos()
     render(conn, "index.html", videos: videos)
   end
 
   def new(conn, _params) do
-    changeset = Media.change_video(%Video{})
+    changeset = Multimedia.change_video(%Video{})
     render(conn, "new.html", changeset: changeset)
   end
 
@@ -31,20 +31,20 @@ defmodule PhoenixVideoStreamWeb.VideoController do
     end
   end
   def show(conn, %{"id" => id}) do
-    video = Media.get_video!(id)
+    video = Multimedia.get_video!(id)
     render(conn, "show.html", video: video)
   end
 
   def edit(conn, %{"id" => id}) do
-    video = Media.get_video!(id)
-    changeset = Media.change_video(video)
+    video = Multimedia.get_video!(id)
+    changeset = Multimedia.change_video(video)
     render(conn, "edit.html", video: video, changeset: changeset)
   end
 
   def update(conn, %{"id" => id, "video" => video_params}) do
-    video = Media.get_video!(id)
+    video = Multimedia.get_video!(id)
 
-    case Media.update_video(video, video_params) do
+    case Multimedia.update_video(video, video_params) do
       {:ok, video} ->
         conn
         |> put_flash(:info, "Video updated successfully.")
@@ -56,8 +56,8 @@ defmodule PhoenixVideoStreamWeb.VideoController do
   end
 
   def delete(conn, %{"id" => id}) do
-    video = Media.get_video!(id)
-    {:ok, _video} = Media.delete_video(video)
+    video = Multimedia.get_video!(id)
+    {:ok, _video} = Multimedia.delete_video(video)
 
     conn
     |> put_flash(:info, "Video deleted successfully.")

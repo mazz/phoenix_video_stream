@@ -1,4 +1,4 @@
-defmodule PhoenixVideoStream.Media.Video do
+defmodule PhoenixVideoStream.Multimedia.Video do
   use Ecto.Schema
   import Ecto.Changeset
 
